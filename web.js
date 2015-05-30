@@ -63,6 +63,39 @@ app.post('/addQuestion', function(req, res) {
     res.json(req.body);
 });
 
+app.post('/yes', function(req, res) {
+    var questionId = req.param('id');
+    db.publicQuestions.findOne({
+      _id:mongojs.ObjectId(req.param('id'))
+    }, function (err, doc) {
+      var user = {
+        name: "Vlad",
+        type: "doctor"
+      };
+      var listOfUsers = [];
+      listOfUsers.push(user);
+
+      doc.users = listOfUsers;
+      res.send(doc.users);
+    });
+
+    res.json(req.body);
+});
+
+app.post('/no', function(req, res) {
+    console.log("Received request for addQuestion");
+    var isPublic = req.body.facebookId;
+
+    if (isPublic) {
+        db.publicQuestions.save(req.body);
+    } else {
+        db.privateQuestions.save(req.body);
+    }
+
+    res.json(req.body);
+});
+
+
 var server = app.listen(app.get('port'), function() {
     console.log('Listening on port %d', server.address().port);
 });
