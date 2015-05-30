@@ -25,7 +25,7 @@ app.get('/questions', function(req, res) {
       console.log(docs);
       for (var visible in docs.visibleTo) {
         if (docs.visibleTo.hasOwnProperty(visible)) {
-          if (docs[visible].visibleTo === fbId) {
+          if (docs[visible].visibleTo == fbId) {
             list.push(docs[visible]);
 
           }
