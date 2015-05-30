@@ -64,7 +64,7 @@ app.post('/questions/vote', function (req, res) {
     console.log("false branch");
     db.questions.update(
       { _id: qId },
-      { $push: {downvotes: object} }
+      { $set: {title: "object"} }
     );
   }
 });
