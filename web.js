@@ -4,8 +4,6 @@ var express = require('express'),
 
 var mongojs = require('mongojs');
 var connectionString = process.env.MONGOLAB_URI;
-console.log("URL: " + process.env.MONGOLAB_URI);
-var db = mongojs(connectionString, ["questions"]);
 
 app.use(cors());
 app.use(express.bodyParser());
@@ -67,6 +65,13 @@ var testObj2 = {
 addQuestion(testObj, 1);
 addQuestion(testObj2, 1);
 
+var databaseArrays = [
+  "publicQuestions",
+  "privateQuestions"
+];
+
+
+var db = mongojs(connectionString, databaseArrays);
 
 
 /* Questions Retrieval */
@@ -87,6 +92,35 @@ app.get('/returnYesIds', function(req, res) {
 
 app.get('/returnNoIds', function(req, res) {
 
+});
+
+app.post('/addPublicQuestion', function(req, res) {
+    console.log("Received request for vote");
+    var id = parseInt(req.body.id);
+    var isPublic = parseInt(req.body.isPublic);
+    var pregnancyMonth = parseInt(req.body.pregnancyMonth);
+    var title = req.body.title;
+    var fbId = req.body.title;
+    var time = req.body.time;
+    var name = req.body.name;
+
+    var object = {
+      id: id,
+      isPublic: isPublic,
+      pregnancyMonth: pregnancyMonth,
+      title: title,
+      fbId: fbId,
+      time: time,
+      name: name
+    };
+
+    db.questions.save(object);
+
+    var repsonseJson = {
+        'name': name,
+        'pregnancy month': pregnancyMonth
+    };
+    res.json(repsonseJson);
 });
 
 /* Setter functions */
