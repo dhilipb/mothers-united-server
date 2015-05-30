@@ -94,7 +94,7 @@ function addQuestion(question, status) {
 	if (status) {
 		console.log(db);
 		db.questions.save({created:'just now'});
-		console.log(db.questions);
+		console.log("Getting from DB" + db.questions.get());
 		publicQuestions.push(question);
 	} else {
 		privateQuestions.push(question);
