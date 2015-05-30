@@ -55,11 +55,13 @@ app.post('/questions/vote', function (req, res) {
   console.log("object", object);
 
   if (isUpVote) {
+    console.log("true branch");
     db.questions.update(
       { _id: qId },
       { $push: {upvotes: object} }
     );
   } else {
+    console.log("false branch");
     db.questions.update(
       { _id: qId },
       { $push: {downvotes: object} }
