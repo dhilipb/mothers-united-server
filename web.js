@@ -44,26 +44,26 @@ app.get('/returnNoIds', function(req, res) {
 
 app.post('/addQuestion', function(req, res) {
     console.log("Received request for addPublicQuestion");
-    var isPublic = req.body.isPublic;
-    var pregnancyMonth = parseInt(req.body.pregnancyMonth);
-    var title = req.body.title;
-    var facebookId = req.body.facebookId;
-    var time = req.body.time;
-    var name = req.body.name;
+    // var isPublic = req.body.isPublic;
+    // var pregnancyMonth = parseInt(req.body.pregnancyMonth);
+    // var title = req.body.title;
+    // var facebookId = req.body.facebookId;
+    // var time = req.body.time;
+    // var name = req.body.name;
 
-    var object = {
-        isPublic: isPublic,
-        pregnancyMonth: pregnancyMonth,
-        title: title,
-        facebookId: facebookId,
-        time: time,
-        name: name
-    };
+    // var object = {
+    //     isPublic: isPublic,
+    //     pregnancyMonth: pregnancyMonth,
+    //     title: title,
+    //     facebookId: facebookId,
+    //     time: time,
+    //     name: name
+    // };
 
     if (isPublic === "true") {
-        db.publicQuestions.save(object);
+        db.publicQuestions.save(req.body);
     } else {
-        db.privateQuestions.save(object);
+        db.privateQuestions.save(req.body);
     }
 
     res.json(object);
