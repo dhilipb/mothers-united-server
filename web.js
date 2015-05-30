@@ -10,8 +10,9 @@ app.use(express.bodyParser());
 app.set('port', (process.env.PORT || 3000));
 
 var databaseArrays = [
-    "publicQuestions",
-    "privateQuestions"
+    "questions",
+    "yesIds",
+    "noIds"
 ];
 
 var db = mongojs(connectionString, databaseArrays);
@@ -31,53 +32,34 @@ app.get('/questions', function(req, res) {
   }
 });
 
-app.get('/returnYesIds', function(req, res) {
-  db.publicQuestions.findOne({
-    _id:mongojs.ObjectId(req.param('id'))
-  }, function (err, doc) {
-    res.send(doc.title);
-  });
+app.get('/questions/vote', function (req, res) {
+  var qId = req.param('questionId');
+  var fbId = req.param('facebookId');
+  var userType = req.param('userType');
+  var isUpVote = req.param('isUpVote');
 
+  var object = {
+    qId: qId,
+    fbId: fbId,
+    userType: userType
+  };
 
-
-  // res.send(req.param('id'));
-});
-
-app.get('/returnNoIds', function(req, res) {
+  if (isUpVote) {
+    db.yesIds.save(object);
+  } else {
+    db.noIds.save(object);
+  }
 
 });
 
 app.post('/questions/new', function(req, res) {
-    console.log("Received request for addQuestion");
+    console.log("Received request for new question");
     var isPublic = req.body.facebookId;
 
-    if (isPublic) {
-        db.publicQuestions.save(req.body);
-    } else {
-        db.privateQuestions.save(req.body);
-    }
+    db.questions.save(req.body);
 
     res.json(req.body);
 });
-
-app.post('/yes', function(req, res) {
-    var questionId = req.body.id;
-    db.publicQuestions.findOne({
-      _id:mongojs.ObjectId(questionId)
-    }, function (err, doc) {
-      // List of users or count
-
-      doc.users = listOfUsers;
-      res.send(doc.users);
-    });
-
-    res.json(req.body);
-});
-
-app.post('/no', function(req, res) {
-
-});
-
 
 var server = app.listen(app.get('port'), function() {
     console.log('Listening on port %d', server.address().port);
