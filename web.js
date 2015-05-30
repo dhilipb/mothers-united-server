@@ -32,7 +32,8 @@ app.get('/questions', function(req, res) {
       list.push(doc);
     });
   }
-  res.json(list);
+  console.log(list);
+  res.send(list);
 });
 
 app.get('/questions/vote', function (req, res) {
