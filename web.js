@@ -44,9 +44,9 @@ app.get('/returnNoIds', function(req, res) {
 
 app.post('/addQuestion', function(req, res) {
     console.log("Received request for addPublicQuestion");
-    var isPublic = req.body.isPublic;
+    var isPublic = req.body.facebookId;
 
-    if (isPublic === "true") {
+    if (isPublic) {
         db.publicQuestions.save(req.body);
     } else {
         db.privateQuestions.save(req.body);
