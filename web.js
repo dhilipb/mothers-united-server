@@ -126,13 +126,6 @@ app.post('/addPublicQuestion', function(req, res) {
 /* Setter functions */
 function addQuestion(question, status) {
     if (status) {
-        console.log(db);
-        db.questions.save({
-            created: 'just now'
-        });
-        db.questions.find(function(err, docs) {
-            console.log("From DB: ", docs);
-        });
         publicQuestions.push(question);
     } else {
         privateQuestions.push(question);
