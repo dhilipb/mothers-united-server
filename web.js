@@ -35,8 +35,15 @@ app.get('/getPrivateQuestions', function(req, res) {
 });
 
 app.get('/returnYesIds', function(req, res) {
-  console.log(req.param('id'));
-  res.send(req.param('id'));
+  db.publicQuestions.findOne({
+    _id:mongojs.ObjectId(req.param('id'))
+  }, function (err, doc) {
+    res.send(doc.title);
+  });
+
+
+
+  // res.send(req.param('id'));
 });
 
 app.get('/returnNoIds', function(req, res) {
