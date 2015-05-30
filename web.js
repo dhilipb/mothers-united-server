@@ -19,9 +19,11 @@ var db = mongojs(connectionString, databaseArrays);
 /* Questions Retrieval */
 app.get('/getPublicQuestions', function(req, res) {
 
-
     res.contentType('application/json');
-    res.send(JSON.stringify(returnQuestionList(1)));
+    db.publicQuestions.find(function(err, docs) {
+    	console.log("Retrieved from DB and sending: ", docs);
+    	res.send(docs);
+	});
 });
 
 app.get('/getPrivateQuestions', function(req, res) {
@@ -55,11 +57,6 @@ app.post('/addPublicQuestion', function(req, res) {
     };
 
     db.publicQuestions.save(object);
-
-    var repsonseJson = {
-        'name': name,
-        'pregnancy month': pregnancyMonth
-    };
     res.json(object);
 });
 
