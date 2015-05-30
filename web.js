@@ -19,21 +19,13 @@ var db = mongojs(connectionString, databaseArrays);
 app.get('/questions', function(req, res) {
   res.contentType('application/json');
   var fbId = req.param('facebookId');
-  var list = [];
   if (fbId) {
 
   } else {
-    db.questions.find({visibleTo: null}).forEach(function (err, doc) {
-      if (!doc) {
-        return;
-      }
-      console.log("err", err);
-      console.log("doc", doc);
-      list.push(doc);
+    db.questions.find({visibleTo: null}, function(err, docs) {
+      res.send(docs);
     });
   }
-  console.log(list);
-  res.send(list);
 });
 
 app.get('/questions/vote', function (req, res) {
