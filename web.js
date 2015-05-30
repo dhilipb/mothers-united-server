@@ -97,7 +97,7 @@ function addQuestion(question, status) {
             created: 'just now'
         });
         db.questions.find(function(err, docs) {
-            console.log("From DB: " + docs);
+            console.log("From DB: ", docs);
         });
         publicQuestions.push(question);
     } else {
