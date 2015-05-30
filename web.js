@@ -2,25 +2,15 @@ var express = require('express')
 , cors = require('cors')
 , app = express();
 
-var MongoClient = require('mongodb').MongoClient;
+var mongojs = require('mongojs');
+var connectionString = process.env.MONGOLAB_URL;
+var db = mongojs(connectionString, ["questions"]);
 
 app.use(cors());
 app.use(express.bodyParser());
 app.set('port', (process.env.PORT || 3000));
 
-app.set('url', (process.env.MONGOLAB_URL));
 var globalDB;
-
-MongoClient.connect(app.get('url'), function(err, db) {
-  if(err) { 
-  	return console.dir(err); 
-  } else {
-  	console.log('Connected to database successfully');
-  	setDB(db);
-  }
-
-});
-
 
 function setDB(db) {
 	globalDB = db;
@@ -101,9 +91,9 @@ app.get('/returnNoIds', function (req, res) {
 /* Setter functions */
 function addQuestion(question, status) {
 	if (status) {
-
-		var collection = getDB().collection('questions');
- 		collection.insert(doc1);
+		console.log(db);
+		db.questions.save({created:'just now'});
+		console.log(db.questions);
 		publicQuestions.push(question);
 	} else {
 		privateQuestions.push(question);
