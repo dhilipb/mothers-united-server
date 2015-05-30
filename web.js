@@ -3,8 +3,8 @@ var express = require('express')
 , app = express();
 
 var mongojs = require('mongojs');
-var connectionString = process.env.MONGOLAB_URL;
-console.log("URL: " + process.env.MONGOLAB_URL);
+var connectionString = process.env.MONGOLAB_URI;
+console.log("URL: " + process.env.MONGOLAB_URI);
 var db = mongojs(connectionString, ["questions"]);
 
 app.use(cors());
