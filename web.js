@@ -114,7 +114,7 @@ app.post('/addPublicQuestion', function(req, res) {
       name: name
     };
 
-    db.questions.save(object);
+    db.publicQuestions.save(object);
 
     var repsonseJson = {
         'name': name,
