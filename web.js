@@ -44,7 +44,7 @@ app.get('/returnNoIds', function(req, res) {
 
 app.post('/addQuestion', function(req, res) {
     console.log("Received request for addPublicQuestion");
-    // var isPublic = req.body.isPublic;
+    var isPublic = req.body.isPublic;
     // var pregnancyMonth = parseInt(req.body.pregnancyMonth);
     // var title = req.body.title;
     // var facebookId = req.body.facebookId;
