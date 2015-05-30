@@ -66,7 +66,7 @@ app.post('/addQuestion', function(req, res) {
         db.privateQuestions.save(req.body);
     }
 
-    res.json(object);
+    res.json(req.body);
 });
 
 /* Setter functions */
