@@ -19,8 +19,18 @@ var db = mongojs(connectionString, databaseArrays);
 app.get('/questions', function(req, res) {
   res.contentType('application/json');
   var fbId = req.param('facebookId');
+  var list = [];
   if (fbId) {
-
+    db.questions.find(function (err, docs) {
+      for (var visible in docs.visibleTo) {
+        if (docs.visibleTo.hasOwnProperty(visible)) {
+          if (docs.visibleTo[visible] === fbId) {
+            list.push(docs);
+          }
+        }
+      }
+      res.send(list);
+    })
   } else {
     db.questions.find({visibleTo: null}, function(err, docs) {
       res.send(docs);
