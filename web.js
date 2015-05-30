@@ -22,15 +22,17 @@ app.get('/questions', function(req, res) {
   var list = [];
   if (fbId) {
     db.questions.find(function (err, docs) {
+      console.log(docs);
       for (var visible in docs.visibleTo) {
         if (docs.visibleTo.hasOwnProperty(visible)) {
-          if (docs.visibleTo[visible] === fbId) {
+          if (docs[visible].visibleTo === fbId) {
             list.push(docs);
+            
           }
         }
       }
       res.send(list);
-    })
+    });
   } else {
     db.questions.find({visibleTo: null}, function(err, docs) {
       res.send(docs);
