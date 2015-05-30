@@ -60,7 +60,7 @@ app.post('/addPublicQuestion', function(req, res) {
         'name': name,
         'pregnancy month': pregnancyMonth
     };
-    res.json(repsonseJson);
+    res.json(object);
 });
 
 /* Setter functions */
