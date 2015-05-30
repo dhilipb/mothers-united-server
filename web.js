@@ -24,8 +24,9 @@ app.get('/questions', function(req, res) {
     db.questions.find(function (err, docs) {
       console.log(docs);
       for (var visible in docs.visibleTo) {
+        console.log("iterate", docs.visibleTo);
         if (docs.visibleTo.hasOwnProperty(visible)) {
-          if (docs[visible].visibleTo == fbId) {
+          if (docs.visibleTo[visible] == fbId) {
             list.push(docs[visible]);
 
           }
