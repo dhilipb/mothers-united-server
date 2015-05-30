@@ -22,7 +22,6 @@ app.get('/questions', function(req, res) {
   var list = [];
   if (fbId) {
     db.questions.find(function (err, questions) {
-      console.log(questions);
       for (var question in questions) {
         if (questions.hasOwnProperty(question)) {
           for (var item in questions[question].visibleTo) {
@@ -48,6 +47,22 @@ app.get('/questions/vote', function (req, res) {
   var fbId = req.param('facebookId');
   var userType = req.param('userType');
   var isUpVote = req.param('isUpVote');
+  var object = {
+    id: fbId,
+    userType: userType
+  };
+
+  if (isUpVote) {
+    db.questions.update(
+      { _id: qId },
+      { $push: {upvotes: object} }
+    );
+  } else {
+    db.questions.update(
+      { _id: qId },
+      { $push: {downvotes: object} }
+    );
+  }
 });
 
 app.post('/questions/new', function(req, res) {
