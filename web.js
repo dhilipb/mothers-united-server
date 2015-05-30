@@ -60,7 +60,7 @@ app.post('/addQuestion', function(req, res) {
         name: name
     };
 
-    if (isPublic) {
+    if (isPublic === "true") {
         db.publicQuestions.save(object);
     } else {
         db.privateQuestions.save(object);
