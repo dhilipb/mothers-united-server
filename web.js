@@ -42,7 +42,7 @@ app.get('/questions', function(req, res) {
   }
 });
 
-app.get('/questions/vote', function (req, res) {
+app.post('/questions/vote', function (req, res) {
   var qId = req.param('questionId');
   var fbId = req.param('facebookId');
   var userType = req.param('userType');
@@ -51,6 +51,8 @@ app.get('/questions/vote', function (req, res) {
     id: fbId,
     userType: userType
   };
+
+  console.log("object", object);
 
   if (isUpVote) {
     db.questions.update(
