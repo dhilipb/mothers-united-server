@@ -35,7 +35,7 @@ app.get('/getPrivateQuestions', function(req, res) {
 });
 
 app.get('/returnYesIds', function(req, res) {
-  console.log(req.params('id'));
+  console.log(req.param('id'));
 });
 
 app.get('/returnNoIds', function(req, res) {
