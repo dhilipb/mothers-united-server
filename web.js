@@ -63,7 +63,7 @@ app.post('/questions/vote', function (req, res) {
   } else {
     console.log("false branch");
     db.questions.update(
-      { creatorAge: 25 },
+      { _id: mongojs.ObjectId(qId) },
       { $set: {title: "object"} }
     );
   }
