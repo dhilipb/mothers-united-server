@@ -45,20 +45,6 @@ app.get('/returnNoIds', function(req, res) {
 app.post('/addQuestion', function(req, res) {
     console.log("Received request for addPublicQuestion");
     var isPublic = req.body.isPublic;
-    // var pregnancyMonth = parseInt(req.body.pregnancyMonth);
-    // var title = req.body.title;
-    // var facebookId = req.body.facebookId;
-    // var time = req.body.time;
-    // var name = req.body.name;
-
-    // var object = {
-    //     isPublic: isPublic,
-    //     pregnancyMonth: pregnancyMonth,
-    //     title: title,
-    //     facebookId: facebookId,
-    //     time: time,
-    //     name: name
-    // };
 
     if (isPublic === "true") {
         db.publicQuestions.save(req.body);
@@ -68,24 +54,6 @@ app.post('/addQuestion', function(req, res) {
 
     res.json(req.body);
 });
-
-/* Setter functions */
-function addQuestion(question, status) {
-    if (status) {
-        publicQuestions.push(question);
-    } else {
-        privateQuestions.push(question);
-    }
-}
-
-/* Getter functons */
-function returnQuestionList(status) {
-    if (status) {
-        return publicQuestions;
-    } else {
-        return privateQuestions;
-    }
-}
 
 var server = app.listen(app.get('port'), function() {
     console.log('Listening on port %d', server.address().port);
