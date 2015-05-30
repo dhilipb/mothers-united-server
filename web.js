@@ -35,7 +35,7 @@ app.get('/getPrivateQuestions', function(req, res) {
 });
 
 app.get('/returnYesIds', function(req, res) {
-
+  console.log(req.params('id'));
 });
 
 app.get('/returnNoIds', function(req, res) {
@@ -43,7 +43,7 @@ app.get('/returnNoIds', function(req, res) {
 });
 
 app.post('/addQuestion', function(req, res) {
-    console.log("Received request for addPublicQuestion");
+    console.log("Received request for addQuestion");
     var isPublic = req.body.facebookId;
 
     if (isPublic) {
