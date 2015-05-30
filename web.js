@@ -2,9 +2,33 @@ var express = require('express')
 , cors = require('cors')
 , app = express();
 
+var MongoClient = require('mongodb').MongoClient;
+
 app.use(cors());
 app.use(express.bodyParser());
 app.set('port', (process.env.PORT || 3000));
+
+app.set('url', (process.env.MONGOLAB_URL));
+var globalDB;
+
+MongoClient.connect(app.get('url'), function(err, db) {
+  if(err) { 
+  	return console.dir(err); 
+  } else {
+  	console.log('Connected to database successfully');
+  	setDB(db);
+  }
+
+});
+
+
+function setDB(db) {
+	globalDB = db;
+};
+
+function getDB() {
+	return globalDB;
+};
 
 var publicQuestions = [];
 var privateQuestions = [];
@@ -56,6 +80,8 @@ addQuestion(testObj2, 1);
 
 /* Questions Retrieval */
 app.get('/getPublicQuestions', function(req, res) {
+
+	
 	res.contentType('application/json');
 	res.send(JSON.stringify(returnQuestionList(1)));
 });
@@ -75,6 +101,9 @@ app.get('/returnNoIds', function (req, res) {
 /* Setter functions */
 function addQuestion(question, status) {
 	if (status) {
+
+		var collection = getDB().collection('questions');
+ 		collection.insert(doc1);
 		publicQuestions.push(question);
 	} else {
 		privateQuestions.push(question);
@@ -118,39 +147,6 @@ app.get('/getData', function(req, res){
 
 var server = app.listen(app.get('port'), function() {
     console.log('Listening on port %d', server.address().port);
-});
-
-app.get('/testGet', function(req, res){
-	console.log("Received request for testGet");
-	res.send("testGet Successful");
-});
-
-app.post('/testPost', function(req, res){
-	console.log("Received request for testPost");
-	var responseString = req.body.city + " is the capital of " + req.body.country;
-	res.send(responseString);
-});
-
-app.get('/testGetJson', function(req, res){
-	console.log("Received request for testGetJson");
-	var repsonseJson = {
-		"FirstCandidate": "http://facebook.com",
-		"SecondCandidate": "http://www.facebook.com",
-		"ThirdCandidate":"http://www.twitter.com"
-	};
-	res.json(repsonseJson);
-});
-
-app.post('/testPostJson', function(req, res){
-	console.log("Received request for testPostJson");
-	var city = req.body.city;
-	var country = req.body.country;
-	var repsonseJson = {
-		city : city,
-		country : country,
-		continent: "Europe"
-	};
-	res.json(repsonseJson);
 });
 
 var totalVote = 0;
