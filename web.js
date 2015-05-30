@@ -57,14 +57,14 @@ app.post('/questions/vote', function (req, res) {
   if (isUpVote) {
     console.log("true branch");
     db.questions.update(
-      { _id: qId },
+      { _id: mongojs.ObjectId(qId) },
       { $push: {upvotes: object} }
     );
   } else {
     console.log("false branch");
     db.questions.update(
       { _id: mongojs.ObjectId(qId) },
-      { $set: {title: "object"} }
+      { $push: {upvotes: object} }
     );
   }
 });
