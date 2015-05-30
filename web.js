@@ -64,9 +64,9 @@ app.post('/addQuestion', function(req, res) {
 });
 
 app.post('/yes', function(req, res) {
-    var questionId = req.param('id');
+    var questionId = req.body.id;
     db.publicQuestions.findOne({
-      _id:mongojs.ObjectId(req.param('id'))
+      _id:mongojs.ObjectId(questionId)
     }, function (err, doc) {
       var user = {
         name: "Vlad",
