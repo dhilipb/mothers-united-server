@@ -96,7 +96,7 @@ app.get('/returnNoIds', function(req, res) {
 
 app.post('/addPublicQuestion', function(req, res) {
     console.log("Received request for vote");
-    console.log(res.body);
+    console.log(req.body);
     var id = parseInt(req.body.id);
     var isPublic = req.body.isPublic;
     var pregnancyMonth = parseInt(req.body.pregnancyMonth);
