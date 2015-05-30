@@ -28,7 +28,7 @@ app.get('/questions', function(req, res) {
       list.push(doc);
     });
   }
-  res.send(list);
+  res.json(list);
 });
 
 app.get('/questions/vote', function (req, res) {
