@@ -21,14 +21,14 @@ app.get('/questions', function(req, res) {
   var fbId = req.param('facebookId');
   var list = [];
   if (fbId) {
-    db.questions.find(function (err, docs) {
-      console.log(docs);
-      for (var object in docs) {
-        if (docs.hasOwnProperty(object)) {
-          for (var item in docs[object].visibleTo) {
-            if (docs[object].visibleTo.hasOwnProperty(item)) {
-              if(docs[object].visibleTo[item] == fbId) {
-                list.push(docs[item]);
+    db.questions.find(function (err, questions) {
+      console.log(questions);
+      for (var question in questions) {
+        if (questions.hasOwnProperty(question)) {
+          for (var item in questions[question].visibleTo) {
+            if (questions[question].visibleTo.hasOwnProperty(item)) {
+              if(questions[question].visibleTo[item] == fbId) {
+                list.push(questions[item]);
               }
             }
           }
