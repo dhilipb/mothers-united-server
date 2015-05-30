@@ -4,6 +4,7 @@ var express = require('express')
 
 var mongojs = require('mongojs');
 var connectionString = process.env.MONGOLAB_URL;
+console.log("URL: " + process.env.MONGOLAB_URL);
 var db = mongojs(connectionString, ["questions"]);
 
 app.use(cors());
