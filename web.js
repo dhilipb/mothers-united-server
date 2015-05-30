@@ -14,7 +14,6 @@ var databaseArrays = [
     "privateQuestions"
 ];
 
-
 var db = mongojs(connectionString, databaseArrays);
 
 /* Questions Retrieval */
