@@ -96,12 +96,12 @@ app.get('/returnNoIds', function(req, res) {
 
 app.post('/addPublicQuestion', function(req, res) {
     console.log("Received request for vote");
-    console.log(res.body);
+    console.log(req.body);
     var id = parseInt(req.body.id);
     var isPublic = req.body.isPublic;
     var pregnancyMonth = parseInt(req.body.pregnancyMonth);
     var title = req.body.title;
-    var fbId = req.body.title;
+    var facebookId = req.body.facebookId;
     var time = req.body.time;
     var name = req.body.name;
 
@@ -110,7 +110,7 @@ app.post('/addPublicQuestion', function(req, res) {
       isPublic: isPublic,
       pregnancyMonth: pregnancyMonth,
       title: title,
-      fbId: fbId,
+      facebookId: facebookId,
       time: time,
       name: name
     };
