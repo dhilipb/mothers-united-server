@@ -24,6 +24,7 @@ app.get('/questions', function(req, res) {
 
   } else {
     db.questions.find({visibleTo: null}).forEach(function (err, doc) {
+      console.log(doc);
       list.push(doc);
     });
   }
