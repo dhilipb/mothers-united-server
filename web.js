@@ -17,56 +17,62 @@ var db = mongojs(connectionString, databaseArrays);
 
 /* Questions Retrieval */
 app.get('/questions', function(req, res) {
-  res.contentType('application/json');
-  var fbId = req.param('facebookId');
-  var list = [];
-  if (fbId) {
-    db.questions.find(function (err, questions) {
-      for (var question in questions) {
-        if (questions.hasOwnProperty(question)) {
-          for (var item in questions[question].visibleTo) {
-            if (questions[question].visibleTo.hasOwnProperty(item)) {
-              if(questions[question].visibleTo[item] == fbId) {
-                list.push(questions[item]);
-              }
+    res.contentType('application/json');
+    var fbId = req.param('facebookId');
+    var list = [];
+    if (fbId) {
+        db.questions.find(function(err, questions) {
+            for (var question in questions) {
+                if (questions.hasOwnProperty(question)) {
+                    for (var item in questions[question].visibleTo) {
+                        if (questions[question].visibleTo.hasOwnProperty(item)) {
+                            if (questions[question].visibleTo[item] == fbId) {
+                                list.push(questions[item]);
+                            }
+                        }
+                    }
+                }
             }
-          }
-        }
-      }
-      res.send(list);
-    });
-  } else {
-    db.questions.find({visibleTo: null}, function(err, docs) {
-      res.send(docs);
-    });
-  }
+            res.send(list);
+        });
+    } else {
+        db.questions.find({
+            visibleTo: null
+        }, function(err, docs) {
+            res.send(docs);
+        });
+    }
 });
 
-app.post('/questions/vote', function (req, res) {
-  var qId = req.param('questionId');
-  var fbId = req.param('facebookId');
-  var userType = req.param('userType');
-  var isUpVote = req.param('isUpVote');
-  var object = {
-    id: fbId,
-    userType: userType
-  };
+app.post('/questions/vote', function(req, res) {
+    var qId = req.param('questionId');
+    var fbId = req.param('facebookId');
+    var userType = req.param('userType');
+    var isUpVote = req.param('isUpVote');
+    var object = {
+        id: fbId,
+        userType: userType
+    };
 
-  console.log("object", object);
-
-  if (isUpVote) {
-    console.log("true branch");
-    db.questions.update(
-      { _id: mongojs.ObjectId(qId) },
-      { $push: {upvotes: object} }
-    );
-  } else {
-    console.log("false branch");
-    db.questions.update(
-      { _id: mongojs.ObjectId(qId) },
-      { $push: {downvotes: object} }
-    );
-  }
+    if (isUpVote) {
+        console.log("true branch");
+        db.questions.update({
+            _id: mongojs.ObjectId(qId)
+        }, {
+            $push: {
+                upvotes: object
+            }
+        });
+    } else {
+        console.log("false branch");
+        db.questions.update({
+            _id: mongojs.ObjectId(qId)
+        }, {
+            $push: {
+                downvotes: object
+            }
+        });
+    }
 });
 
 app.post('/questions/new', function(req, res) {
