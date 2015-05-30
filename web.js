@@ -6,6 +6,92 @@ app.use(cors());
 app.use(express.bodyParser());
 app.set('port', (process.env.PORT || 3000));
 
+var publicQuestions = [];
+var privateQuestions = [];
+
+/* Question object mockup
+{
+	id: "some id",
+	isPublic: true,
+	title: "Title",
+	fbId: "123141",
+	time: "epoch or wathever",
+	name: "Mommy",
+	pregnancyMonth: 6
+}
+*/
+
+/* user mock
+{
+	name: "user name",
+	id: some id
+	type: "doc"
+}
+*/
+
+var testObj = {
+	id: 1,
+	isPublic: true,
+	title: "Title",
+	fbId: "123141",
+	time: "epoch or wathever",
+	name: "Mommy",
+	pregnancyMonth: 6
+};
+
+var testObj2 = {
+	id: 2,
+	isPublic: false,
+	title: "New Title",
+	fbId: "123141",
+	time: "epoch or wathever",
+	name: "Mommy",
+	pregnancyMonth: 6
+};
+
+addQuestion(testObj, 1);
+addQuestion(testObj2, 1);
+
+
+
+/* Questions Retrieval */
+app.get('/getPublicQuestions', function(req, res) {
+	res.contentType('application/json');
+	res.send(JSON.stringify(returnQuestionList(1)));
+});
+
+app.get('/getPrivateQuestions', function(req, res) {
+
+});
+
+app.get('/returnYesIds', function (req, res) {
+
+});
+
+app.get('/returnNoIds', function (req, res) {
+
+});
+
+/* Setter functions */
+function addQuestion(question, status) {
+	if (status) {
+		publicQuestions.push(question);
+	} else {
+		privateQuestions.push(question);
+	}
+}
+
+/* Getter functons */
+function returnQuestionList(status) {
+	if (status) {
+		return publicQuestions;
+	} else {
+		return privateQuestions;
+	}
+}
+
+
+
 app.get('/getName', function(req, res){
 	console.log("Received request");
 	var repsonseJson = {
@@ -41,7 +127,7 @@ app.get('/testGet', function(req, res){
 
 app.post('/testPost', function(req, res){
 	console.log("Received request for testPost");
-	var responseString = req.body.city + " is the capital of " + req.body.country; 
+	var responseString = req.body.city + " is the capital of " + req.body.country;
 	res.send(responseString);
 });
 
@@ -58,7 +144,7 @@ app.get('/testGetJson', function(req, res){
 app.post('/testPostJson', function(req, res){
 	console.log("Received request for testPostJson");
 	var city = req.body.city;
-	var country = req.body.country; 
+	var country = req.body.country;
 	var repsonseJson = {
 		city : city,
 		country : country,
@@ -71,7 +157,7 @@ var totalVote = 0;
 app.post('/vote', function(req, res){
 	console.log("Received request for vote");
 	var name = req.body.name;
-	var newVote = parseInt(req.body.vote); 
+	var newVote = parseInt(req.body.vote);
 	totalVote =  totalVote+newVote;
 
 
