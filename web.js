@@ -10,9 +10,7 @@ app.use(express.bodyParser());
 app.set('port', (process.env.PORT || 3000));
 
 var databaseArrays = [
-    "questions",
-    "yesIds",
-    "noIds"
+    "questions"
 ];
 
 var db = mongojs(connectionString, databaseArrays);
@@ -21,15 +19,15 @@ var db = mongojs(connectionString, databaseArrays);
 app.get('/questions', function(req, res) {
   res.contentType('application/json');
   var fbId = req.param('facebookId');
+  var list = [];
   if (fbId) {
-    db.privateQuestions.find(function(err, docs) {
-      res.send(docs);
-    });
+
   } else {
-    db.publicQuestions.find(function (err, docs) {
-      res.send(docs);
+    db.questions.find({visibleTo: null}).forEach(function (err, doc) {
+      list.push(doc);
     });
   }
+  res.send(list);
 });
 
 app.get('/questions/vote', function (req, res) {
@@ -37,19 +35,6 @@ app.get('/questions/vote', function (req, res) {
   var fbId = req.param('facebookId');
   var userType = req.param('userType');
   var isUpVote = req.param('isUpVote');
-
-  var object = {
-    qId: qId,
-    fbId: fbId,
-    userType: userType
-  };
-
-  if (isUpVote) {
-    db.yesIds.save(object);
-  } else {
-    db.noIds.save(object);
-  }
-
 });
 
 app.post('/questions/new', function(req, res) {
