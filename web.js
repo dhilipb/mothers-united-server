@@ -121,8 +121,8 @@ app.post('/questions/new', function(req, res) {
             var sender = new gcm.Sender('AIzaSyCIbtc12KfmDXCKdkLeNgfsAI6z8KT5aYM');
 
             sender.send(message, regIds, function (err, result) {
-                if(err) console.error(err);
-                else    console.log(result);
+                if(err) console.error("Error: ", err);
+                else    console.log("Result: ", result);
             });
         }
       });
