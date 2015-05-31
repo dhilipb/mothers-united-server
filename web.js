@@ -22,12 +22,13 @@ app.get('/questions', function(req, res) {
     var fbId = req.param('facebookId');
     var list = [];
     if (fbId) {
+        console.log("Private branch");
         db.questions.find(function(err, questions) {
             for (var question in questions) {
                 if (questions.hasOwnProperty(question)) {
-                    for (var item in questions[question].visibleTo) {
-                        if (questions[question].visibleTo.hasOwnProperty(item)) {
-                            if (questions[question].visibleTo[item] == fbId) {
+                    for (var item in questions[question].visibleFacebookIds) {
+                        if (questions[question].visibleFacebookIds.hasOwnProperty(item)) {
+                            if (questions[question].visibleFacebookIds[item] == fbId) {
                                 list.push(questions[item]);
                             }
                         }
@@ -37,8 +38,15 @@ app.get('/questions', function(req, res) {
             res.send(list);
         });
     } else {
+        console.log("Public branch");
+        // db.questions.find({
+        //     visibleFacebookIds: null
+        // }, function(err, docs) {
+        //     res.send(docs);
+        // });
+
         db.questions.find({
-            visibleTo: null
+            visibleFacebookIds: []
         }, function(err, docs) {
             res.send(docs);
         });
