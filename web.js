@@ -4,6 +4,11 @@ var express = require('express'),
 
 var mongojs = require('mongojs');
 var connectionString = process.env.MONGOLAB_URI;
+var gcm = require('android-gcm');
+
+// initialize new androidGcm object 
+var gcmObject = new gcm.AndroidGcm('API_KEY');
+
 
 app.use(cors());
 app.use(express.bodyParser());
@@ -39,10 +44,11 @@ app.get('/questions', function(req, res) {
         });
     } else {
         db.questions.find({
-            $or : [
-              {visibleFacebookIds: []},
-              {visibleFacebookIds: null}
-            ]
+            $or: [{
+                visibleFacebookIds: []
+            }, {
+                visibleFacebookIds: null
+            }]
         }, function(err, docs) {
             res.send(docs);
         });
@@ -95,37 +101,64 @@ app.post('/questions/new', function(req, res) {
                 }
             }
         }
+
         for (var id in fbIds) {
             db.pushNotifications.find({
-                facebookId: fbIds[id]
-            },function(err, docs) {
-                console.log(docs)
-            })
+                        facebookId: fbIds[id]
+                    }, function(err, docs) {
+                        if(!docs) {
+                            return;
+                        }
+
+                        if (docs[0].deviceId) {
+                            var message = new gcm.Message({
+                                registration_ids: docs[0].deviceId,
+                                data: {
+                                    key1: 'key 1',
+                                    key2: 'key 2'
+                                }
+                            });
+
+                            // send the message 
+                            console.log("Message being sent: ", message);
+                            gcmObject.send(message, function(err, response) {
+                                console.log("Response: ", response);
+                                console.log("Err: ", err);
+                            });
+                        })
+
+
+                }
+                // TODO: Remove duplicates
+
+
+
+
         }
     }
 
 });
 
 // Comments
-app.post('/comments/new', function (req, res) {
-  console.log(req.body);
-  db.comments.save(req.body);
-  res.send(req.body);
+app.post('/comments/new', function(req, res) {
+    console.log(req.body);
+    db.comments.save(req.body);
+    res.send(req.body);
 });
 
-app.get('/comments', function (req, res) {
-  var qId = req.param('questionId');
+app.get('/comments', function(req, res) {
+    var qId = req.param('questionId');
 
-  db.comments.find({
-    questionId : qId 
-  }, function (err, docs) {
-    res.send(docs);
-  });
+    db.comments.find({
+        questionId: qId
+    }, function(err, docs) {
+        res.send(docs);
+    });
 });
 
-app.post('/push/new', function (req, res) {
-  db.pushNotifications.save(req.body);
-  res.send(req.body);
+app.post('/push/new', function(req, res) {
+    db.pushNotifications.save(req.body);
+    res.send(req.body);
 });
 
 var server = app.listen(app.get('port'), function() {
