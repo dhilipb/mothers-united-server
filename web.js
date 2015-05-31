@@ -34,7 +34,7 @@ app.get('/questions', function(req, res) {
                     for (var item in questions[question].visibleFacebookIds) {
                         if (questions[question].visibleFacebookIds.hasOwnProperty(item)) {
                             if (questions[question].visibleFacebookIds[item] == fbId) {
-                                list.push(questions[item]);
+                                list.push(questions[question]);
                                 break;
                             }
                         }
