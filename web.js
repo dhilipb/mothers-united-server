@@ -113,8 +113,10 @@ app.post('/questions/new', function(req, res) {
                     if (docs[doc].deviceId) {
                         var message = new gcm.Message();
 
-                        message.addData('alert', 'msg1');
-                        message.addData('title', 'msg2');
+                        var data = {'title': 'Title1', 'text': 'Text1'};
+                        message.addData('notification', data);
+                        message.addData('title', 'Title2');
+                        message.addData('text', 'Text2');
 
                         var regIds = [];
                         regIds.push(docs[doc].deviceId);
