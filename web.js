@@ -89,23 +89,20 @@ app.post('/questions/new', function(req, res) {
 
 // Comments
 app.post('/comments/new', function (req, res) {
+  var qId = req.param('questionId');
+  var fbId = req.param('facebookId');
+  var time = req.param('time');
+  var com = req.body.comment;
 
-  db.comments.save(req.body);
-  res.json(req.body);
+  var comment = {
+    qId: qId,
+    fbId: fbId,
+    time: time,
+    comment: com
+  };
 
-  // var qId = req.param('questionId');
-  // var fbId = req.param('facebookId');
-  // var time = req.param('time');
-  // var com = req.param('comment');
-  //
-  // var comment = {
-  //   qId: qId,
-  //   fbId: fbId,
-  //   time: time,
-  //   comment: com
-  // };
-  //
-  // db.comments.save(comment);
+  db.comments.save(comment);
+  res.send(comment);
 });
 
 app.get('/comments', function (req, res) {
