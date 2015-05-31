@@ -113,8 +113,8 @@ app.post('/questions/new', function(req, res) {
           var message = new gcm.Message({
             registration_ids: docs[0].deviceId,
             data: {
-              key1: 'key 1',
-              key2: 'key 2'
+              alert: 'Alert!',
+              title: 'Title!'
             }
           });
 
