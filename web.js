@@ -11,7 +11,8 @@ app.set('port', (process.env.PORT || 3000));
 
 var databaseArrays = [
     "questions",
-    "comments"
+    "comments",
+    "pushNotifications"
 ];
 
 var db = mongojs(connectionString, databaseArrays);
@@ -111,6 +112,18 @@ app.get('/comments', function (req, res) {
   }, function (err, docs) {
     res.send(docs);
   });
+});
+
+app.post('/push/new', function (req, res) {
+  var qId = req.param('questionId');
+  var deviceId = req.param('deviceId');
+
+  var push = {
+    qId: qId,
+    devideId: fbId
+  };
+
+  db.pushNotifications.save(push);
 });
 
 var server = app.listen(app.get('port'), function() {
