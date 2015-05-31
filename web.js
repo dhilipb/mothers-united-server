@@ -94,13 +94,13 @@ app.post('/questions/new', function(req, res) {
   var fbIds = req.body.visibleFacebookIds;
   console.log("fbIds", fbIds);
   if (fbIds) {
-    for (var id in fbIds) {
-      if (fbIds.hasOwnProperty(id)) {
-        if (req.body.creatorId === fbIds[id]) {
-          fbIds.splice(id, 1);
-        }
-      }
-    }
+    // for (var id in fbIds) {
+    //   if (fbIds.hasOwnProperty(id)) {
+    //     if (req.body.creatorId === fbIds[id]) {
+    //       fbIds.splice(id, 1);
+    //     }
+    //   }
+    // }
 
     for (var id in fbIds) {
         console.log("fbIds one by one", fbIds[id]);
