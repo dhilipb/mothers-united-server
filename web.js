@@ -85,6 +85,25 @@ app.post('/questions/new', function(req, res) {
     db.questions.save(req.body);
 
     res.json(req.body);
+
+    var fbIds = req.body.visibleFacebookIds;
+    if (fbIds) {
+        for (var id in fbIds) {
+            if (fbIds.hasOwnProperty(id)) {
+                if (req.body.creatorId === fbIds[id]) {
+                    fbIds.splice(id, 1);
+                }
+            }
+        }
+        for (var id in fbIds) {
+            db.pushNotifications.find({
+                facebookId: fbIds[id]
+            },function(err, docs) {
+                console.log(docs)
+            })
+        }
+    }
+
 });
 
 // Comments
@@ -115,16 +134,8 @@ app.get('/comments', function (req, res) {
 });
 
 app.post('/push/new', function (req, res) {
-  var qId = req.param('questionId');
-  var deviceId = req.param('deviceId');
-
-  var push = {
-    qId: qId,
-    devideId: deviceId
-  };
-
-  db.pushNotifications.save(push);
-  res.send(push);
+  db.pushNotifications.save(req.body);
+  res.send(req.body);
 });
 
 var server = app.listen(app.get('port'), function() {
