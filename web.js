@@ -24,9 +24,9 @@ app.get('/questions', function(req, res) {
         db.questions.find(function(err, questions) {
             for (var question in questions) {
                 if (questions.hasOwnProperty(question)) {
-                    for (var item in questions[question].visibleTo) {
-                        if (questions[question].visibleTo.hasOwnProperty(item)) {
-                            if (questions[question].visibleTo[item] == fbId) {
+                    for (var item in questions[question].visibleFacebookIds) {
+                        if (questions[question].visibleFacebookIds.hasOwnProperty(item)) {
+                            if (questions[question].visibleFacebookIds[item] == fbId) {
                                 list.push(questions[item]);
                             }
                         }
@@ -37,7 +37,7 @@ app.get('/questions', function(req, res) {
         });
     } else {
         db.questions.find({
-            visibleTo: null
+            visibleFacebookIds: null
         }, function(err, docs) {
             res.send(docs);
         });
