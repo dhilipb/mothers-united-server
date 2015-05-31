@@ -124,6 +124,7 @@ app.post('/push/new', function (req, res) {
   };
 
   db.pushNotifications.save(push);
+  res.send(push);
 });
 
 var server = app.listen(app.get('port'), function() {
