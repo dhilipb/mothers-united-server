@@ -10,7 +10,8 @@ app.use(express.bodyParser());
 app.set('port', (process.env.PORT || 3000));
 
 var databaseArrays = [
-    "questions"
+    "questions",
+    "comments"
 ];
 
 var db = mongojs(connectionString, databaseArrays);
@@ -55,7 +56,6 @@ app.post('/questions/vote', function(req, res) {
     };
 
     if (isUpVote) {
-        console.log("true branch");
         db.questions.update({
             _id: mongojs.ObjectId(qId)
         }, {
@@ -64,7 +64,6 @@ app.post('/questions/vote', function(req, res) {
             }
         });
     } else {
-        console.log("false branch");
         db.questions.update({
             _id: mongojs.ObjectId(qId)
         }, {
@@ -82,6 +81,25 @@ app.post('/questions/new', function(req, res) {
     db.questions.save(req.body);
 
     res.json(req.body);
+});
+
+// Comments
+app.post('/comments/post', function (req, res) {
+  var qId = req.param('questionId');
+  var fbId = req.param('facebookId');
+  var time = req.param('time');
+  // fbId, time, comment
+
+  var comment = {
+    qId: qId,
+    fbId: fbId,
+    time: time,
+    comment: req.body.comment
+  };
+
+  db.comments.save(comment);
+  res.json(comment);
+
 });
 
 var server = app.listen(app.get('port'), function() {
