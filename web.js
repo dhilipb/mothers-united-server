@@ -135,7 +135,6 @@ app.post('/questions/new', function(req, res) {
             }
           });
         }
-
       });
     }
   }
