@@ -22,7 +22,6 @@ app.get('/questions', function(req, res) {
     var fbId = req.param('facebookId');
     var list = [];
     if (fbId) {
-        console.log("Private branch");
         db.questions.find(function(err, questions) {
             for (var question in questions) {
                 if (questions.hasOwnProperty(question)) {
@@ -38,13 +37,6 @@ app.get('/questions', function(req, res) {
             res.send(list);
         });
     } else {
-        console.log("Public branch");
-        // db.questions.find({
-        //     visibleFacebookIds: null
-        // }, function(err, docs) {
-        //     res.send(docs);
-        // });
-
         db.questions.find({
             $or : [
               {visibleFacebookIds: []},
@@ -100,7 +92,6 @@ app.post('/comments/new', function (req, res) {
   var fbId = req.param('facebookId');
   var time = req.param('time');
   var com = req.param('comment');
-  // fbId, time, comment
 
   var comment = {
     qId: qId,
@@ -110,8 +101,6 @@ app.post('/comments/new', function (req, res) {
   };
 
   db.comments.save(comment);
-  res.json(comment);
-
 });
 
 app.get('/comments', function (req, res) {
