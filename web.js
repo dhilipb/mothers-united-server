@@ -107,11 +107,9 @@ app.post('/questions/new', function(req, res) {
       db.pushNotifications.find({
         facebookId: fbIds[id]
       }, function(err, docs) {
-        if (!docs) {
-          return;
-        }
+        console.log(docs)
 
-        if (docs[0].deviceId) {
+        if (docs && docs.length > 0 && docs[0].deviceId ) {
           var message = new gcm.Message({
             registration_ids: docs[0].deviceId,
             data: {
