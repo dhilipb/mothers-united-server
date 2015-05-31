@@ -98,7 +98,7 @@ app.get('/comments', function (req, res) {
   var qId = req.param('questionId');
 
   db.comments.find({
-    _id: mongojs.ObjectId(qId)
+    questionId : qId 
   }, function (err, docs) {
     res.send(docs);
   });
