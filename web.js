@@ -92,6 +92,7 @@ app.post('/questions/new', function(req, res) {
   res.json(req.body);
 
   var fbIds = req.body.visibleFacebookIds;
+  console.log("fbIds", fbIds);
   if (fbIds) {
     for (var id in fbIds) {
       if (fbIds.hasOwnProperty(id)) {
@@ -101,7 +102,8 @@ app.post('/questions/new', function(req, res) {
       }
     }
 
-    for (id in fbIds) {
+    for (var id in fbIds) {
+        console.log("fbIds one by one", fbIds[id]);
       db.pushNotifications.find({
         facebookId: fbIds[id]
       }, function(err, docs) {
@@ -109,30 +111,20 @@ app.post('/questions/new', function(req, res) {
           return;
         }
 
-        for (var id in fbIds) {
-          db.pushNotifications.find({
-            facebookId: fbIds[id]
-          }, function(err, docs) {
-            if (!docs) {
-              return;
+        if (docs[0].deviceId) {
+          var message = new gcm.Message({
+            registration_ids: docs[0].deviceId,
+            data: {
+              key1: 'key 1',
+              key2: 'key 2'
             }
+          });
 
-            if (docs[0].deviceId) {
-              var message = new gcm.Message({
-                registration_ids: docs[0].deviceId,
-                data: {
-                  key1: 'key 1',
-                  key2: 'key 2'
-                }
-              });
-
-              // send the message
-              console.log("Message being sent: ", message);
-              gcmObject.send(message, function(err, response) {
-                console.log("Response: ", response);
-                console.log("Err: ", err);
-              });
-            }
+          // send the message
+          console.log("Message being sent: ", message);
+          gcmObject.send(message, function(err, response) {
+            console.log("Response: ", response);
+            console.log("Err: ", err);
           });
         }
       });
