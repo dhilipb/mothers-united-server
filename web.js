@@ -115,12 +115,14 @@ app.post('/questions/new', function(req, res) {
                     delayWhileIdle: true,
                     timeToLive: 3,
                     data: {
-                        title: 'New message from ' + req.body.creatorName,
+                        title: 'New question from ' + req.body.creatorName,
                         message: req.body.title
                     }
                 });
 
                 var regIds = [];
+                var uniqueArray = [];
+
                 for (var doc in docs) {
 
                     if (docs[doc].deviceId) {
@@ -128,9 +130,14 @@ app.post('/questions/new', function(req, res) {
                     }
                 }
 
-                var sender = new gcm.Sender('AIzaSyCIbtc12KfmDXCKdkLeNgfsAI6z8KT5aYM');
+                uniqueArray = regIds.filter(function(elem, pos) {
+                    return regIds.indexOf(elem) == pos;
+                })
 
-                sender.send(message, regIds, function(err, result) {
+                var sender = new gcm.Sender('AIzaSyCIbtc12KfmDXCKdkLeNgfsAI6z8KT5aYM');
+                console.log('Unique reg ids', uniqueArray);
+                
+                sender.send(message, uniqueArray, function(err, result) {
                     if (err) console.error("Error: ", err);
                     else console.log("Result: ", result);
                 });
