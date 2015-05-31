@@ -90,20 +90,8 @@ app.post('/questions/new', function(req, res) {
 // Comments
 app.post('/comments/new', function (req, res) {
   console.log(req.body);
-  var qId = req.param('questionId');
-  var fbId = req.param('facebookId');
-  var time = req.param('time');
-  var com = req.body.comment;
-
-  var comment = {
-    qId: qId,
-    fbId: fbId,
-    time: time,
-    comment: com
-  };
-
-  db.comments.save(comment);
-  res.send(comment);
+  db.comments.save(req.body);
+  res.send(req.body);
 });
 
 app.get('/comments', function (req, res) {
