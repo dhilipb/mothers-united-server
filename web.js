@@ -56,13 +56,12 @@ app.get('/questions', function(req, res) {
 });
 
 app.post('/questions/vote', function(req, res) {
-    var qId = req.param('questionId');
-    var fbId = req.param('facebookId');
-    var userType = req.param('userType');
-    var isUpVote = req.param('isUpVote');
+    var qId = req.body.questionId;
+    var isUpVote = req.body.isUpVote;
+
     var object = {
-        id: fbId,
-        userType: userType
+        id: req.body.facebookId,
+        userType: req.body.userType
     };
 
     if (isUpVote) {
@@ -125,10 +124,11 @@ app.post('/questions/new', function(req, res) {
                             console.log("Response: ", response);
                             console.log("Err: ", err);
                         });
-                    })
+                    });
             }
         }
     }
+}
 
 });
 
