@@ -46,7 +46,7 @@ app.get('/questions', function(req, res) {
         // });
 
         db.questions.find({
-            visibleFacebookIds: []
+            visibleFacebookIds: [] || null
         }, function(err, docs) {
             res.send(docs);
         });
