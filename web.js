@@ -7,7 +7,7 @@ var connectionString = process.env.MONGOLAB_URI;
 var gcm = require('android-gcm');
 
 // initialize new androidGcm object 
-var gcmObject = new gcm.AndroidGcm('API_KEY');
+var gcmObject = new gcm.AndroidGcm('AIzaSyCIbtc12KfmDXCKdkLeNgfsAI6z8KT5aYM');
 
 
 app.use(cors());
