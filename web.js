@@ -39,11 +39,11 @@ app.get('/questions', function(req, res) {
         });
     } else {
         console.log("Public branch");
-        db.questions.find({
-            visibleFacebookIds: null
-        }, function(err, docs) {
-            res.send(docs);
-        });
+        // db.questions.find({
+        //     visibleFacebookIds: null
+        // }, function(err, docs) {
+        //     res.send(docs);
+        // });
 
         db.questions.find({
             visibleFacebookIds: []
