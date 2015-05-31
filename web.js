@@ -109,26 +109,30 @@ app.post('/questions/new', function(req, res) {
             }, function(err, docs) {
                 console.log("docs", docs)
 
+                var message = new gcm.Message({
+                    collapseKey: 'demo',
+                    delayWhileIdle: true,
+                    timeToLive: 3,
+                    data: {
+                        title: 'This is my title',
+                        alert: 'This is my alert'
+                    }
+                });
+
+                var regIds = [];
                 for (var doc in docs) {
+
                     if (docs[doc].deviceId) {
-                        var message = new gcm.Message();
-
-                        var data = {'title': 'Title1', 'text': 'Text1'};
-                        message.addData('notification', data);
-                        message.addData('title', 'Title2');
-                        message.addData('text', 'Text2');
-
-                        var regIds = [];
                         regIds.push(docs[doc].deviceId);
-
-                        var sender = new gcm.Sender('AIzaSyCIbtc12KfmDXCKdkLeNgfsAI6z8KT5aYM');
-
-                        sender.send(message, regIds, function(err, result) {
-                            if (err) console.error("Error: ", err);
-                            else console.log("Result: ", result);
-                        });
                     }
                 }
+
+                var sender = new gcm.Sender('AIzaSyCIbtc12KfmDXCKdkLeNgfsAI6z8KT5aYM');
+
+                sender.send(message, regIds, function(err, result) {
+                    if (err) console.error("Error: ", err);
+                    else console.log("Result: ", result);
+                });
             });
         }
     }
