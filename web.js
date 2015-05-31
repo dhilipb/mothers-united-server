@@ -120,7 +120,7 @@ app.post('/push/new', function (req, res) {
 
   var push = {
     qId: qId,
-    devideId: fbId
+    devideId: deviceId
   };
 
   db.pushNotifications.save(push);
