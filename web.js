@@ -5,6 +5,7 @@ var express = require('express'),
 var mongojs = require('mongojs');
 var connectionString = process.env.MONGOLAB_URI;
 var gcm = require('android-gcm');
+var gcm = require('node-gcm');
 
 // initialize new androidGcm object
 var gcmObject = new gcm.AndroidGcm('AIzaSyCIbtc12KfmDXCKdkLeNgfsAI6z8KT5aYM');
@@ -110,20 +111,20 @@ app.post('/questions/new', function(req, res) {
         console.log("docs", docs)
 
         if (docs && docs.length > 0 && docs[0].deviceId ) {
-          var message = new gcm.Message({
-            registration_ids: docs[0].deviceId,
-            data: {
-              alert: 'Alert!',
-              title: 'Title!'
-            }
-          });
+            var message = new gcm.Message();
 
-          // send the message
-          console.log("Message being sent: ", message);
-          gcmObject.send(message, function(err, response) {
-            console.log("Response: ", response);
-            console.log("Err: ", err);
-          });
+            message.addData('alert', 'msg1');
+            message.addData('title', 'msg2');
+
+            var regIds = [];
+            regIds.push(docs[0].deviceId);
+
+            var sender = new gcm.Sender('AIzaSyCIbtc12KfmDXCKdkLeNgfsAI6z8KT5aYM');
+
+            sender.send(message, regIds, function (err, result) {
+                if(err) console.error(err);
+                else    console.log(result);
+            });
         }
       });
     }
