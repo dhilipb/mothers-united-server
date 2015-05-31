@@ -46,7 +46,10 @@ app.get('/questions', function(req, res) {
         // });
 
         db.questions.find({
-            visibleFacebookIds: [] || null
+            $or : [
+              {visibleFacebookIds: []},
+              {visibleFacebookIds: null}
+            ]
         }, function(err, docs) {
             res.send(docs);
         });
