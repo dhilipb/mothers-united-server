@@ -108,26 +108,16 @@ app.post('/questions/new', function(req, res) {
 
 // Comments
 app.post('/comments/new', function (req, res) {
-  var qId = req.param('questionId');
-  var fbId = req.param('facebookId');
-  var time = req.param('time');
-  var com = req.param('comment');
-
-  var comment = {
-    qId: qId,
-    fbId: fbId,
-    time: time,
-    comment: com
-  };
-
-  db.comments.save(comment);
+  console.log(req.body);
+  db.comments.save(req.body);
+  res.send(req.body);
 });
 
 app.get('/comments', function (req, res) {
   var qId = req.param('questionId');
 
   db.comments.find({
-    _id: mongojs.ObjectId(qId)
+    questionId : qId 
   }, function (err, docs) {
     res.send(docs);
   });
