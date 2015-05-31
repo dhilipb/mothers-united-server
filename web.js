@@ -115,7 +115,7 @@ app.post('/questions/new', function(req, res) {
                     delayWhileIdle: true,
                     timeToLive: 3,
                     data: {
-                        title: 'New message from ' + creatorName,
+                        title: 'New message from ' + req.body.creatorName,
                         message: req.body.title
                     }
                 });
