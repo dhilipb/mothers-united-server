@@ -88,18 +88,29 @@ app.post('/comments/new', function (req, res) {
   var qId = req.param('questionId');
   var fbId = req.param('facebookId');
   var time = req.param('time');
+  var com = req.param('comment');
   // fbId, time, comment
 
   var comment = {
     qId: qId,
     fbId: fbId,
     time: time,
-    comment: req.body.comment
+    comment: com
   };
 
   db.comments.save(comment);
   res.json(comment);
 
+});
+
+app.get('/comments', function (req, res) {
+  var qId = req.param('questionId');
+
+  db.comments.find({
+    _id: mongojs.ObjectId(qId)
+  }, function (err, docs) {
+    res.send(docs);
+  });
 });
 
 var server = app.listen(app.get('port'), function() {
