@@ -104,36 +104,29 @@ app.post('/questions/new', function(req, res) {
 
         for (var id in fbIds) {
             db.pushNotifications.find({
-                        facebookId: fbIds[id]
-                    }, function(err, docs) {
-                        if(!docs) {
-                            return;
-                        }
+                    facebookId: fbIds[id]
+                }, function(err, docs) {
+                    if (!docs) {
+                        return;
+                    }
 
-                        if (docs[0].deviceId) {
-                            var message = new gcm.Message({
-                                registration_ids: docs[0].deviceId,
-                                data: {
-                                    key1: 'key 1',
-                                    key2: 'key 2'
-                                }
-                            });
+                    if (docs[0].deviceId) {
+                        var message = new gcm.Message({
+                            registration_ids: docs[0].deviceId,
+                            data: {
+                                key1: 'key 1',
+                                key2: 'key 2'
+                            }
+                        });
 
-                            // send the message 
-                            console.log("Message being sent: ", message);
-                            gcmObject.send(message, function(err, response) {
-                                console.log("Response: ", response);
-                                console.log("Err: ", err);
-                            });
-                        })
-
-
-                }
-                // TODO: Remove duplicates
-
-
-
-
+                        // send the message 
+                        console.log("Message being sent: ", message);
+                        gcmObject.send(message, function(err, response) {
+                            console.log("Response: ", response);
+                            console.log("Err: ", err);
+                        });
+                    })
+            }
         }
     }
 
